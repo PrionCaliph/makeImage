@@ -55,16 +55,16 @@ echo "Started $NAME"
 pv "$INF" | sudo dd of="$OUTF"
 
 
-#echo "${Y}Making image without empty space...${NC}" 
-#(pv "$INF" | sudo dd ) | pigz > $OUTF.gz 
+echo "${Y}Making compressed imgage...${NC}" 
+(pv "$INF" | sudo dd ) | pigz > $OUTF.gz 
 
-#echo -n "${Y}Press enter to decompress image "
-#read keyPress; if [ -z $keyPress ]; then echo "${Y}Decompressing image...${NC}"
-#	(pv $OUTF.gz | pigz --decompress) > $OUTF
-#	echo "${C}Image decompressed :)"
-#	else echo "${C}Ard${NC}"
-#fi
-#
+echo -n "${Y}Press enter to decompress image "; read keyPress
+if [ -z $keyPress ]; then 
+	echo "${Y}Decompressing image...${NC}"
+	(pv $OUTF.gz | pigz --decompress) > $OUTF && echo "${C}Image decompressed :)"
+	else echo "${C}Ard${NC}"
+fi
+
 sudo chown $(echo ${SUDO_USER:-${USER}}):$(echo ${SUDO_USER:-${USER}}) $OUTF.gz
 sudo chown $(echo ${SUDO_USER:-${USER}}):$(echo ${SUDO_USER:-${USER}}) $OUTF
 ls -l $LOCAT |grep $NAME
