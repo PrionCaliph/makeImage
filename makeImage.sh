@@ -14,7 +14,7 @@ PV=$(dpkg -s pv | grep Status)
 OK='Status: install ok installed'
 
 if [ "$PV" = "$OK" ]; then echo "${C}pv is already installed :)${NC}"
-	else echo "${Y}Will install pv ...${NC}" && sudo apt install --install-recommends -qq -y pv && PV=$(dpkg -s pv | grep Status)
+	else echo "${Y}Will install pv ...${NC}" && sudo apt install --install-recommends -y pv && PV=$(dpkg -s pv | grep Status)
 	 	if [ "$PV" = "$OK" ]; then echo "${C}pv installed successfully :)!${NC}"
 			else echo "${R}Wasn't able to install pv :(${NC}"
 		fi
@@ -22,7 +22,7 @@ fi
 
 GZ=$(dpkg -s pigz | grep Status)
 if [ "$GZ" = "$OK" ]; then echo "${C}pigz is already installed :)${NC}"
-	else echo "${Y}Will install pigz ...${NC}" && sudo apt install --install-recommends -qq -y pigz && PV=$(dpkg -s pigz | grep Status)
+	else echo "${Y}Will install pigz ...${NC}" && sudo apt install --install-recommends -y pigz && PV=$(dpkg -s pigz | grep Status)
 	 	if [ "$GZ" = "$OK" ]; then echo "${C}pigz installed successfully :)!${NC}"
 			else echo "${R}Wasn't able to install pigz :(${NC}"
 		fi
@@ -55,13 +55,18 @@ echo "Started $NAME"
 pv "$INF" | sudo dd of="$OUTF"
 
 
-echo "${Y}Making compressed imgage...${NC}" 
-(pv "$INF" | sudo dd ) | pigz > $OUTF.gz 
+echo -n "${Y}Press enter to compress the image...${NC}"; read keyPress
+if [ -z $keyPress ]; then 
+	echo "${Y}Making compressed imgage...${NC}" 
+	(pv "$INF" | sudo dd ) | pigz > $OUTF.gz ## takes image made and compresses; makes img.gz (smaller but still has empty space)
+	else echo "${C}Ard${NC}"
+fi
+	
 
-echo -n "${Y}Press enter to decompress image "; read keyPress
+echo -n "${Y}Press enter to decompress image ${NC}"; read keyPress
 if [ -z $keyPress ]; then 
 	echo "${Y}Decompressing image...${NC}"
-	(pv $OUTF.gz | pigz --decompress) > $OUTF && echo "${C}Image decompressed :)"
+	(pv $OUTF.gz | pigz --decompress) > $OUTF && echo "${C}Image decompressed :)${NC}"
 	else echo "${C}Ard${NC}"
 fi
 
