@@ -65,6 +65,6 @@ pv "$INF" | sudo dd of="$OUTF"
 #	else echo "${C}Ard${NC}"
 #fi
 #
-#sudo chown $(echo ${SUDO_USER:-${USER}}):$(echo ${SUDO_USER:-${USER}}) $OUTF.gz
-#sudo chown $(echo ${SUDO_USER:-${USER}}):$(echo ${SUDO_USER:-${USER}}) $OUTF
-#ls -l $LOCAT |grep $NAME
+sudo chown $(echo ${SUDO_USER:-${USER}}):$(echo ${SUDO_USER:-${USER}}) $OUTF.gz
+sudo chown $(echo ${SUDO_USER:-${USER}}):$(echo ${SUDO_USER:-${USER}}) $OUTF
+ls -l $LOCAT |grep $NAME
